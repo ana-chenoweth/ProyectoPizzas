@@ -9,6 +9,7 @@ pyvenv.cfg
 
 # Ignore Django SQLite DB
 db.sqlite3
+*.sqlite3
 
 # Ignore VSCode settings (si usas VSCode)
 .vscode/
