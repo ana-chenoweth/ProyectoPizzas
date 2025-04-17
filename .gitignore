@@ -23,3 +23,7 @@ staticfiles/
 # Ignore migrations (opcional, si no quieres subirlas)
 **/migrations/*.py
 **/migrations/__pycache__/
+
+.DS_Store
+*/.DS_Store
+**/.DS_Store
