@@ -1,0 +1,166 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Tasks</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+  <div class="sidebar">
+    <div class="top">
+      <div class="logo">
+        <i class="bx bxl-codepen"></i>
+        <span>WorkMate</span>
+      </div>
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <div class="user">
+      <img src="{% static "user-img.jpg" %}" alt="me" class="user-img">
+      <div>
+        {% if user.is_authenticated %}
+        <p class="bold">Hello, {{user.username}}</p>
+        {% endif %}
+      </div>
+    </div>
+    <ul>
+      <li>
+        <a href="/">
+          <i class="bx bxs-grid-alt"></i>
+          <span class="nav-item">Dashboard</span>
+        </a>
+        <span class="tooltip">Dashboard</span>
+      </li>
+      {% if perms.tasks.view_task %}
+      <li>
+        <a href="/gestion-tareas/">
+          <i class="bx bx-task"></i>
+          <span class="nav-item">Manage Tasks</span>
+        </a>
+        <span class="tooltip">Manage Tasks</span>
+      </li>
+      {% endif %}
+      {% if perms.user.edit_user %} 
+      <li>
+        <a href="/gestion-usuarios/">
+          <i class="bx bxs-user-account"></i>
+          <span class="nav-item">Manage Users</span>
+        </a>
+        <span class="tooltip">Manage Users</span>
+      </li>
+      {% endif %}
+      <li>
+        <a href="/mis-tareas/">
+          <i class="bx bxs-notepad"></i>
+          <span class="nav-item">My Tasks</span>
+        </a>
+        <span class="tooltip">My Tasks</span>
+      </li>
+      <li>
+        <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" aria-label="Logout">Log out</button>
+        </form>
+        <span class="tooltip">Log out</span>
+      </li>
+    </ul>
+  </div>
+
+  <div class="main-content">
+    <div class="container mt-4">
+        <h1>My Tasks</h1>
+        <div class="row">
+          <!-- Filter by Category -->
+          <form method="get" class="col-md-4">
+            <label for="category" class="form-label">Filter by Category:</label>
+            <select id="category" name="category" class="form-select" onchange="this.form.submit()">
+                <option value="" {% if not filter_category %}selected{% endif %}>All tasks</option>
+                {% for category in categories %}
+                    <option value="{{ category }}" {% if filter_category == category %}selected{% endif %}>
+                        {{ category }}
+                    </option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="priority" value="{{ filter_priority }}">
+            <input type="hidden" name="progress" value="{{ filter_progress }}">
+          </form>
+
+          <!-- Filter by Priority -->
+          <form method="get" class="col-md-4">
+              <label for="priority" class="form-label">Filter by Priority:</label>
+              <select id="priority" name="priority" class="form-select" onchange="this.form.submit()">
+                  <option value="" {% if not filter_priority %}selected{% endif %}>All tasks</option>
+                  {% for value, label in priorities %}
+                      <option value="{{ value }}" {% if filter_priority == value|stringformat:"s" %}selected{% endif %}>
+                         {{ label }}
+                      </option>
+                  {% endfor %}
+              </select>
+              <input type="hidden" name="category" value="{{ filter_category }}">
+              <input type="hidden" name="progress" value="{{ filter_progress }}">
+          </form>
+
+           <!-- Filter by Progress -->
+           <form method="get" class="col-md-4">
+              <label for="progress" class="form-label">Filter by Progress:</label>
+              <select id="progress" name="progress" class="form-select" onchange="this.form.submit()">
+                  <option value="" {% if not filter_progress %}selected{% endif %}>All tasks</option>
+                  {% for value, label in progressing %}
+                      <option value="{{ value }}" {% if filter_progress == value|stringformat:"s" %}selected{% endif %}>
+                         {{ label }}
+                      </option>
+                  {% endfor %}
+              </select>
+              <input type="hidden" name="category" value="{{ filter_category }}">
+              <input type="hidden" name="priority" value="{{ filter_priority }}">
+          </form>
+        </div>
+
+        <div class="row">
+            {% for mytask in mytasks %}
+                <div class="col-md-4 mb-4">
+                    <div class="card border-warning h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ mytask.title }}</h5>
+                            <p class="card-text">Description: {{ mytask.description }}</p>
+                            <p class="card-text">Category: {{ mytask.category }}</p>
+                            <p class="card-text">Priority: Level {{ mytask.priority }}</p>
+                            <p class="card-text">Assigned to: {{ mytask.user.first_name }} {{ mytask.user.last_name }}</p>
+                            <p class="card-text">Progress: {{ mytask.progress }}</p>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <p>No tasks assigned at the moment.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+
+
+
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+      sidebar.classList.toggle('active');
+    };
+  </script>
+
+</body>
+
+</html>

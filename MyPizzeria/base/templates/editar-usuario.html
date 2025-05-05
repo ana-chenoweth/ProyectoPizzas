@@ -1,0 +1,68 @@
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit User - WorkMate!</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">    
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>    
+</head>
+<body>
+    <div class="sidebar">
+        <div class="top">
+            <div class="logo">
+                <i class="bx bxl-codepen"></i>
+                <span>WorkMate</span>
+            </div>
+            <i class="bx bx-menu" id="btn"></i>
+        </div>
+        <div class="user">
+            <img src="{% static "user-img.jpg" %}" alt="me" class="user-img">
+            <div>
+                {% if user.is_authenticated %}
+                <p class="bold">Hello, {{user.username}}</p>
+                {% endif %}
+            </div>
+        </div>
+        <ul>
+            <li><a href="/"><i class="bx bxs-grid-alt"></i><span class="nav-item">Dashboard</span></a></li>
+            <li><a href="/gestion-tareas/"><i class="bx bx-task"></i><span class="nav-item">Manage Tasks</span></a></li>
+            <li><a href="/gestion-usuarios/"><i class="bx bxs-user-account"></i><span class="nav-item">Manage Users</span></a></li>
+            <li><a href="/mis-tareas/"><i class="bx bxs-notepad"></i><span class="nav-item">My Tasks</span></a></li>
+            <li>
+                <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" aria-label="Logout">Log out</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="container mt-4">
+          <h1>Edit User</h1>
+          <form method="POST" action="{% url 'base:gestion_usuarios' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+            <a href="{% url 'base:gestion_tareas' %}" class="btn btn-secondary btn-sm">Cancel</a>
+          </form>
+        </div>
+      </div>
+  
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        let btn = document.querySelector('#btn');
+        let sidebar = document.querySelector('.sidebar');
+    
+        btn.onclick = function () {
+          sidebar.classList.toggle('active');
+        };
+      </script>
+</body>
+</html>
