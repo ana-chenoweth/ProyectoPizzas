@@ -4,16 +4,18 @@ from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path("", views.home, name="home"),
+    #path("gestion-tareas/", views.gestion_tareas, name="gestion_tareas"),
+    path("gestion-usuarios/", views.gestion_usuarios, name="gestion_usuarios"),
+    #path("crear-tarea/", views.crear_tarea, name="crear-tarea"),
+    #path("mis-tareas/", views.mis_tareas, name="mis-tareas"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("login/", auth_views.LoginView.as_view(), name='login'),
-    path("register/", views.register, name="register"), 
-    path("accounts/logout/", auth_views.LogoutView.as_view(next_page='login'), name='logout'),
-
-
-    path("password_reset/", auth_views.PasswordResetView.as_view(template_name="base/password_reset.html"), name="password_reset"),
-    path("password_reset/done/", auth_views.PasswordResetDoneView.as_view(template_name="base/password_reset_done.html"), name="password_reset_done"),
-    path("reset/<uidb64>/<token>/", auth_views.PasswordResetConfirmView.as_view(template_name="base/password_reset_confirm.html"), name="password_reset_confirm"),
-    path("reset/done/", auth_views.PasswordResetCompleteView.as_view(template_name="base/password_reset_complete.html"), name="password_reset_complete"),
-
-    path('activate/<uidb64>/<token>/', views.activate_account, name='activate'),
+    path('accounts/logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
+    path('editar-usuario/<int:user_id>/', views.editar_usuario, name='editar-usuario'),
+    path("crear-usuario/", views.gestion_crearusuario, name="crear-usuario"),
+    #path('editar-tarea/<int:task_id>/', views.editar_tarea, name='editar_tarea'),
+    path('inventory/', views.inventory_list, name='inventory_list'),
+    path('inventory/add/', views.add_inventory_item, name='add_inventory_item'),
+    path('inventory/edit/<int:item_id>/', views.edit_inventory_item, name='edit_inventory_item'),
+    path('inventory/delete/<int:item_id>/', views.delete_inventory_item, name='delete_inventory_item'),
 ]

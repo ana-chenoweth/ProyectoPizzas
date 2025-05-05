@@ -2,29 +2,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MyPizzeria!</title>
+  <title>WorkMate!</title>
   <link rel="stylesheet" href="{% static 'css/auth.css' %}">        
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-</head>
 
+</head>
 <div class="shadow-wrap">
  <div class="form-wrap">
   <h3>Log in</h3>
-  
-  <!-- Login form -->
-  <form method="POST">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">Log in</button>
-  </form>
-
-  <!-- Google login button -->
-  <a href="/auth/login/google-oauth2/">
-    <button type="button">Login with Google</button>
-  </a>
-  
-
-  <p>Don't have an account? <a href="{% url 'base:register' %}">Register</a>.</p>
-  <p><a href="{% url 'base:password_reset' %}">Forgot your password?</a></p>
+<form method="POST">
+ {% csrf_token %}
+ {{form}}
+ <button type="submit">Log in</button>
+</form>
 </div>
 </div>

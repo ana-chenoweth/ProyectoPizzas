@@ -1,18 +1,156 @@
-<!DOCTYPE html>
+{% load static %}
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyPizzeria</title>
-</head>
-<body>
-    <h1>Welcome to MyPizzeria!</h1>
-    <p>Hello, {{ user.username }}!</p>
-    <form method="post" action="{% url 'base:logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
-    {% block content %}
-    {% endblock content %}
-</body>
+    <title>WorkMate!</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">        
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="top">
+        <div class="logo">
+          <i class="bx bxl-codepen"></i>
+          <span>WorkMate</span>
+        </div>
+        <i class="bx bx-menu" id="btn"></i>
+      </div>
+      <div class="user">
+        <img src="{% static "user-img.jpg" %}" alt="me" class="user-img">
+        <div>
+          {% if user.is_authenticated %}
+          <p class="bold">Hello, {{user.username}}</p>
+          {% endif %}
+        </div>
+      </div>
+      <ul>
+        <li>
+          <a href="/">
+            <i class="bx bxs-grid-alt"></i>
+            <span class="nav-item">Dashboard</span>
+          </a>
+          <span class="tooltip">Dashboard</span>
+        </li>
+        {% if perms.tasks.view_task %}
+        <li>
+          <a href="/gestion-tareas/">
+            <i class="bx bx-task"></i>
+            <span class="nav-item">Manage Tasks</span>
+          </a>
+          <span class="tooltip">Manage Tasks</span>
+        </li>
+        {% endif %}
+        {% if perms.user.edit_user %} 
+        <li>
+          <a href="/gestion-usuarios/">
+            <i class="bx bxs-user-account"></i>
+            <span class="nav-item">Manage Users</span>
+          </a>
+          <span class="tooltip">Manage Users</span>
+        </li>
+        {% endif %}
+        <li>
+          <a href="/mis-tareas/">
+            <i class="bx bxs-notepad"></i>
+            <span class="nav-item">My Tasks</span>
+          </a>
+          <span class="tooltip">My Tasks</span>
+        </li>
+        <li>
+          <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
+            {% csrf_token %}
+            <button type="submit" aria-label="Logout">Log out</button>
+          </form>
+          <span class="tooltip">Log out</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="main-content">
+      <div class="container mt-12">
+        <h1>Dashboard</h1>
+        <div class="container mt-12">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card text-white bg-primary mb-3">
+                <div class="card-header">Tasks</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text">{{ num_tasks }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card text-white bg-info mb-3">
+                <div class="card-header">Team Members</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text">{{ num_team_members }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card text-white bg-success mb-3">
+                <div class="card-header">Completed Tasks</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text">{{ completed_tasks }}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="card text-white bg-warning mb-3">
+                <div class="card-header">In Progress Tasks</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text">{{ in_progress_tasks }}</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="card text-white bg-danger mb-3">
+                <div class="card-header">Not Started Tasks</div>
+                <div class="card-body">
+                  <h5 class="card-title">Total</h5>
+                  <p class="card-text">{{ not_started_tasks }}</p>
+                </div>
+              </div>
+            </div>
+            {% if perms.user.edit_user %} 
+            <div class="col-md-4">
+              <div class="card mb-3">
+                <div class="card-header">Quick Actions</div>
+                <div class="card-body">
+                  <a href="/crear-tarea/" class="btn btn-primary">Create New Task</a>
+                  <a href="/crear-usuario/" class="btn btn-secondary">Create New User</a>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+     <!-- Bootstrap JS and dependencies -->
+     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+ 
+
+  </body>
+
+  <script>
+    let btn = document.querySelector('#btn');
+    let sidebar = document.querySelector('.sidebar');
+
+    btn.onclick = function () {
+      sidebar.classList.toggle('active');
+    };
+  </script>
 </html>

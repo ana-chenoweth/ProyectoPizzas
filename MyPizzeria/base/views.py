@@ -1,60 +1,144 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from .forms import UserRegisterForm
-from django.contrib.auth.tokens import default_token_generator
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.utils.http import urlsafe_base64_decode
+from workmates.models import workmateUser
+from tasks.models import InventoryItem
+from .form import WorkmateUserCreationForm, InventoryItemForm
+from django.db import models
 
 @login_required
 def home(request):
-    return render(request, 'base/home.html')
+    inventory_items = InventoryItem.objects.all()
+    category_totals = InventoryItem.objects.values('item_type').annotate(total_quantity=models.Sum('quantity'))
+
+    return render(request, 'base.html', {
+        'inventory_items': inventory_items,
+        'category_totals': category_totals,
+
+    })
 
 
-def register(request):
+@login_required
+@permission_required('tasks.view_task', raise_exception=True)
+def inventory_list(request):
+    inventory_items = InventoryItem.objects.all()
+
+    return render(request, "inventory_list.html", {'inventory_items': inventory_items})
+
+
+@login_required
+@permission_required('tasks.add_inventoryitem', raise_exception=True)
+def add_inventory_item(request):
     if request.method == 'POST':
-        form = UserRegisterForm(request.POST)
+        form = InventoryItemForm(request.POST)
         if form.is_valid():
-            user = form.save(commit=False)
-            user.is_active = False  # Desactiva la cuenta hasta que se confirme el correo
-            user.save()
-
-            # Generar el token y el enlace de activación
-            token = default_token_generator.make_token(user)
-            uid = urlsafe_base64_encode(force_bytes(user.pk))
-            activation_link = request.build_absolute_uri(f'/activate/{uid}/{token}/')
-
-            # Enviar el correo de activación
-            subject = 'Activate your account'
-            message = render_to_string('base/activation_email.html', {
-                'user': user,
-                'activation_link': activation_link,
-            })
-            send_mail(subject, message, 'noreply@example.com', [user.email])
-
-            messages.success(request, 'Please check your email to activate your account.')
-            return redirect('login')
+            inventory_item = form.save(commit=False)
+            inventory_item.added_by = request.user
+            inventory_item.save()
+            messages.success(request, "Inventory item added successfully!")
+            return redirect('inventory_list')
     else:
-        form = UserRegisterForm()
-    return render(request, 'base/register.html', {'form': form})
+        form = InventoryItemForm()
+    return render(request, 'add_inventory_item.html', {'form': form})
 
 
-def activate_account(request, uidb64, token):
-    try:
-        uid = urlsafe_base64_decode(uidb64).decode()
-        user = User.objects.get(pk=uid)
-    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-        user = None
 
-    if user is not None and default_token_generator.check_token(user, token):
-        user.is_active = True
-        user.save()
-        messages.success(request, 'Your account has been activated. You can now log in.')
-        return redirect('login')
+@login_required
+@permission_required('tasks.change_inventoryitem', raise_exception=True)
+def edit_inventory_item(request, item_id):
+    inventory_item = get_object_or_404(InventoryItem, id=item_id)
+    if request.method == 'POST':
+        form = InventoryItemForm(request.POST, instance=inventory_item)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Inventory item updated successfully!')
+            return redirect('inventory_list')
     else:
-        return HttpResponse('Activation link is invalid!')
+        form = InventoryItemForm(instance=inventory_item)
+    return render(request, 'edit-inventory_item.html', {'form': form, 'inventory_item': inventory_item})
+
+@login_required
+@permission_required('tasks.delete_inventoryitem', raise_exception=True)
+def delete_inventory_item(request, item_id):
+    inventory_item = get_object_or_404(InventoryItem, id=item_id)
+    if request.method == 'POST':
+        inventory_item.delete()
+        messages.success(request, "Inventory item deleted successfully!")
+        return redirect('inventory_list')
+    return render(request, 'delete_inventory_item.html', {'inventory_item': inventory_item})
+
+@login_required
+@permission_required('workmates.view_workmateuser', raise_exception=True)
+def gestion_usuarios(request):
+    users = workmateUser.objects.all()
+    return render(request, "gestion-usuarios.html", {'users': users})
+
+
+@login_required
+@permission_required('workmates.add_workmateuser', raise_exception=True)
+def gestion_crearusuario(request):
+    if request.method == 'POST':
+        form = WorkmateUserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User created successfully!')
+            return redirect('base:gestion_usuarios')
+    else:
+        form = WorkmateUserCreationForm()
+    return render(request, "crear-usuario.html", {'form': form})
+
+
+@login_required
+@permission_required('workmates.change_workmateuser', raise_exception=True)
+def editar_usuario(request, user_id):
+    user = get_object_or_404(workmateUser, id=user_id)
+
+    if request.method == 'POST':
+        form = WorkmateUserCreationForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'User updated successfully!')
+            return redirect('base:gestion_usuarios')
+    else:
+        form = WorkmateUserCreationForm(instance=user)
+
+    return render(request, 'editar-usuario.html', {'form': form, 'user': user})
+'''
+
+@login_required
+def mis_tareas(request):
+    filter_category = request.GET.get('category', '')
+    filter_priority = request.GET.get('priority', '')
+    filter_progress = request.GET.get('progress', '')
+
+    categories = [choice[0] for choice in Tasks.Categories]
+    priorities = Tasks.Urgency.choices
+    progressing = Tasks.Completion.choices
+
+    mytasks = Tasks.objects.filter(user=request.user)
+
+    if filter_category and filter_category != '':
+        mytasks = mytasks.filter(category=filter_category)
+
+    if filter_priority and filter_priority != '':
+        mytasks = mytasks.filter(priority=filter_priority)
+
+    if filter_progress and filter_progress != '':
+        mytasks = mytasks.filter(progress=filter_progress)
+
+    return render(request, "mis-tareas.html", {
+        'mytasks': mytasks,
+        'categories': categories,
+        'priorities': priorities,
+        'progressing': progressing,
+        'filter_category': filter_category,
+        'filter_priority': filter_priority,
+        'filter_progress': filter_progress
+    })
+
+
+@login_required
+@permission_required('tasks.add_task', raise_exception=True)
+def crear_nueva_tarea(request):
+    return render(request, "crear-nueva-tarea.html", {})
+'''
