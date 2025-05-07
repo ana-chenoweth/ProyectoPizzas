@@ -36,7 +36,7 @@ def add_inventory_item(request):
             inventory_item.added_by = request.user
             inventory_item.save()
             messages.success(request, "Inventory item added successfully!")
-            return redirect('inventory_list')
+            return redirect('base:home')
     else:
         form = InventoryItemForm()
     return render(request, 'add_inventory_item.html', {'form': form})

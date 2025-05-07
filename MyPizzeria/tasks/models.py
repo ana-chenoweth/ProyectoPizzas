@@ -20,7 +20,7 @@ class InventoryItem(models.Model):
     added_by = models.ForeignKey(workmateUser, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.name, self.description, self.item_type, self.quanity, self.expiry_date, self.user.first_name
+        return f"{self.name}, {self.description}, {self.item_type}, {self.quantity}, {self.expiry_date}, {self.added_by}"
 '''
     @classmethod
     def count_by_progress(cls, progress_status):
