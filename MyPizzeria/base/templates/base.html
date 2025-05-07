@@ -34,15 +34,13 @@
           </a>
           <span class="tooltip">Dashboard</span>
         </li>
-        {% if perms.tasks.view_task %}
         <li>
-          <a href="/gestion-tareas/">
+          <a href="/gestion-inventario/">
             <i class="bx bx-task"></i>
-            <span class="nav-item">Manage Tasks</span>
+            <span class="nav-item">Manage Inventory</span>
           </a>
-          <span class="tooltip">Manage Tasks</span>
+          <span class="tooltip">Manage Inventory</span>
         </li>
-        {% endif %}
         {% if perms.user.edit_user %} 
         <li>
           <a href="/gestion-usuarios/">

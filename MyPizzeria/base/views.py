@@ -19,7 +19,6 @@ def home(request):
 
 
 @login_required
-@permission_required('tasks.view_task', raise_exception=True)
 def inventory_list(request):
     inventory_items = InventoryItem.objects.all()
 
@@ -27,7 +26,6 @@ def inventory_list(request):
 
 
 @login_required
-@permission_required('tasks.add_inventoryitem', raise_exception=True)
 def add_inventory_item(request):
     if request.method == 'POST':
         form = InventoryItemForm(request.POST)
@@ -103,7 +101,7 @@ def editar_usuario(request, user_id):
         form = WorkmateUserCreationForm(instance=user)
 
     return render(request, 'editar-usuario.html', {'form': form, 'user': user})
-'''
+
 
 @login_required
 def mis_tareas(request):
@@ -138,7 +136,5 @@ def mis_tareas(request):
 
 
 @login_required
-@permission_required('tasks.add_task', raise_exception=True)
 def crear_nueva_tarea(request):
     return render(request, "crear-nueva-tarea.html", {})
-'''
