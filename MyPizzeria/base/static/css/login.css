@@ -1,0 +1,156 @@
+/* reset / tipografía */
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; font-family: 'Inter', sans-serif; }
+
+/* contenedor principal */
+.login-container {
+  display: flex;
+  height: 100vh;
+  align-items: stretch;
+}
+
+/* ---------- Lado izquierdo (form) ---------- */
+.login-left {
+  flex: 0 0 400;
+  background: #FFFFFF;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 170px;
+}
+
+.login-left h1 {
+  font-size: 2.5rem;
+  margin-bottom: 10px;
+}
+
+.login-left p {
+  color: #555555;
+  margin-bottom: 30px;
+}
+
+/* grupo input + icono */
+.input-group {
+  background: #F9F4EA;
+  border-radius: 30px;
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  margin-bottom: 20px;
+}
+
+.input-group i {
+  font-size: 1.2rem;
+  color: #666666;
+  margin-right: 10px;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  width: 100%;
+  font-size: 1rem;
+  color: #333333;
+}
+
+/* botón login */
+.btn-login {
+  background: linear-gradient(135deg, #E2C19D, #CD9C67);
+  border: none;
+  border-radius: 30px;
+  padding: 12px 40px;
+  font-size: 1rem;
+  color: #FFFFFF;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* separador "Login with Others" */
+.or {
+  position: relative;
+  text-align: center;
+  color: #444444;
+  font-weight: bold;
+  margin: 30px 0;
+}
+
+.or::before,
+.or::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 35%;
+  height: 1px;
+  background: #DDDDDD;
+}
+
+.or::before { left: 0; }
+.or::after  { right: 0; }
+
+/* botón Google */
+.btn-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #DDDDDD;
+  border-radius: 30px;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #444444;
+  font-size: 1rem;
+}
+
+.btn-google img {
+  width: 20px;
+  margin-right: 10px;
+}
+
+/* ---------- Lado derecho (promo) ---------- */
+.login-right {
+  flex: 1;
+  background: #E4DFD4;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.promo-card {
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(5px);
+  overflow:inherit;
+  position: relative;
+  border-radius: 30px;
+  padding: 50px;
+  text-align: left;
+  max-width: 80%;
+  height: 400px;
+}
+
+.promo-card h2 {
+  color: #FFFFFF;
+  font-size: 2.5rem;
+  line-height: 1.2;
+  margin-bottom: 20px;
+}
+
+.promo-card img {
+  position: absolute;
+  width: 80%;
+  height: auto;
+  display: block;
+  border-radius: 0 0 30px 0;
+  right: 0;
+  bottom: 0;
+  top: 100px;
+  margin: 0;
+  padding-top: 80px;
+}
+
+/* Responsive: ocultar promo en pantallas pequeñas */
+@media (max-width: 768px) {
+  .login-container { flex-direction: column; }
+  .login-right { display: none; }
+}

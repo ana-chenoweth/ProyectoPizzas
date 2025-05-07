@@ -1,19 +1,43 @@
 {% load static %}
+<!DOCTYPE html>
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WorkMate!</title>
-  <link rel="stylesheet" href="{% static 'css/auth.css' %}">        
+  <title>Login - Piedra Romana</title>
+  <!--estilos-->
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">        
   <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-
 </head>
-<div class="shadow-wrap">
- <div class="form-wrap">
-  <h3>Log in</h3>
-<form method="POST">
- {% csrf_token %}
- {{form}}
- <button type="submit">Log in</button>
-</form>
-</div>
-</div>
+
+<body>
+  <div class="login-container">
+    <!-- Lado izquierdo formulario -->
+    <div class="login-left">
+      <h1>LOGIN</h1>
+      <p>Do you make delicious pizza here? Login!</p>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="input-group">
+          <i class="bx bx-user"></i>
+          <input type="text" name="username" placeholder="Usuario" required>
+        </div>
+        <div class="input-group">
+          <i class="bx bx-lock-alt"></i>
+          <input type="password" name="password" placeholder="Contraseña" required>
+        </div>
+        <button type="submit" class="btn-login">Login Now</button>
+      </form>
+    </div>
+    <!-- Lado derecho decoracion -->
+    <div class="login-right">
+      <div class="promo-card">
+        <h2>From the dough to<br>the oven!<br>Pizza Romana!</h2>
+        <img src="{% static 'images/pizza.png' %}" alt="Pizza Romana">
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>
