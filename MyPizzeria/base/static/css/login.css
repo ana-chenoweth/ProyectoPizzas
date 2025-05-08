@@ -154,3 +154,156 @@ html, body { height: 100%; font-family: 'Inter', sans-serif; }
   .login-container { flex-direction: column; }
   .login-right { display: none; }
 }
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 30px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+  font-family: 'Inter', sans-serif;
+}
+
+.header h1 {
+  font-size: 4rem;
+  font-family: 'Playfair Display';
+  border: 30px;
+}
+
+.header .title {
+  font-size: 1.2rem;
+}
+
+.header nav a {
+  margin-left: 20px;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Pizzota */
+.hero-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Menú */
+.menu {
+  background: #E4DFD4;
+  padding: 40px 20px;
+  text-align: center;
+}
+
+.menu h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: 'Playfair Display';
+}
+
+.menu-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+  max-width: 600px;
+  text-align: left;
+}
+
+.menu-list li {
+  padding: 15px;
+  background: #fff;
+  margin-bottom: 10px;
+  border-radius: 15px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+.menu-list li span {
+  font-weight: bold;
+  align-self: flex-end;
+}
+
+/* Contacto */
+.contact {
+  padding: 40px 20px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.contact h1 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  font-family: 'Playfair Display';
+}
+
+.contact-wrapper {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.contact-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+}
+
+.contact-wrapper img {
+  width: 300px;
+  max-width: 100%;
+  border-radius: 10px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  gap: 10px;
+}
+.contact-form {
+  width: 90%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.contact-form input,
+.contact-form textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.contact-form button {
+  padding: 10px;
+  border: none;
+  background: #CD9C67;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Fuentes */
+h1, h2, h3, .title {
+  font-family: 'Sree Krushnadevaraya', serif;
+}
+
+body, p, input, button, a, li, span, em, textarea {
+  font-family: 'Playfair Display', serif;
+}
+
+/* Mapita */
+.map-frame {
+  width: 30%;
+  height: 300px;
+  border: 0;  
+  border-radius: 10px;
+}
