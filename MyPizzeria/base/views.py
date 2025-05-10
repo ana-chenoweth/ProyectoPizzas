@@ -5,6 +5,8 @@ from workmates.models import workmateUser
 from tasks.models import InventoryItem
 from .form import WorkmateUserCreationForm, InventoryItemForm
 from django.db import models
+import csv
+from django.http import HttpResponse
 
 @login_required
 def home(request):
@@ -55,6 +57,26 @@ def edit_inventory_item(request, item_id):
     else:
         form = InventoryItemForm(instance=inventory_item)
     return render(request, 'edit-inventory_item.html', {'form': form, 'inventory_item': inventory_item})
+
+@login_required
+def export_inventory_csv(request):
+    # Crear respuesta con tipo de contenido CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inventory.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Name', 'Category', 'Quantity', 'Expiry Date', 'Description'])
+
+    for item in InventoryItem.objects.all():
+        writer.writerow([
+            item.name,
+            item.get_item_type_display(),
+            item.quantity,
+            item.expiry_date,
+            item.description
+        ])
+
+    return response
 
 @login_required
 @permission_required('tasks.delete_inventoryitem', raise_exception=True)
