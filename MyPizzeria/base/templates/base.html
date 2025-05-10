@@ -76,6 +76,16 @@
       <h1>Dashboard</h1>
       <div class="container mt-12">
         <h1>Inventory Overview</h1>
+        {% if low_stock_items %}
+        <div class="alert alert-warning mt-4" role="alert">
+          <strong>¡Atención!</strong> Hay productos con inventario bajo:
+          <ul>
+            {% for item in low_stock_items %}
+              <li><strong>{{ item.name }}</strong>: {{ item.quantity }} unidades</li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
         <table class="table">
           <thead>
             <tr>
@@ -97,7 +107,12 @@
             ">
               <td>{{ item.name }}</td>
               <td>{{ item.get_item_type_display }}</td>
-              <td>{{ item.quantity }}</td>
+              <td>
+                {{ item.quantity }}
+                {% if item.quantity <= 5 %}
+                  <i class="bx bx-error-circle text-danger ml-1" data-toggle="tooltip" title="Inventario bajo"></i>
+                {% endif %}
+              </td>
               <td>{{ item.expiry_date }}</td>
               <td>{{ item.description }}</td>
             </tr>

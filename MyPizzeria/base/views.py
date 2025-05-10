@@ -10,11 +10,12 @@ from django.db import models
 def home(request):
     inventory_items = InventoryItem.objects.all()
     category_totals = InventoryItem.objects.values('item_type').annotate(total_quantity=models.Sum('quantity'))
+    low_stock_items = InventoryItem.objects.filter(quantity__lte=5)  # umbral bajo
 
     return render(request, 'base.html', {
         'inventory_items': inventory_items,
         'category_totals': category_totals,
-
+        'low_stock_items': low_stock_items,  # variable de bajo stock
     })
 
 
