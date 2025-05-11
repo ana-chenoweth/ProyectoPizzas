@@ -5,14 +5,22 @@ from workmates.models import workmateUser
 from tasks.models import InventoryItem
 from .form import WorkmateUserCreationForm, InventoryItemForm
 from django.db import models
+from django.db.models import Q
 import csv
 from django.http import HttpResponse
 
 @login_required
 def home(request):
+    search_query = request.GET.get('search', '')
     inventory_items = InventoryItem.objects.all()
     category_totals = InventoryItem.objects.values('item_type').annotate(total_quantity=models.Sum('quantity'))
     low_stock_items = InventoryItem.objects.filter(quantity__lte=5)  # umbral bajo
+
+    if search_query:
+        inventory_items = inventory_items.filter(
+            Q(name__icontains=search_query) |
+            Q(item_type__icontains=search_query)
+        )
 
     return render(request, 'base.html', {
         'inventory_items': inventory_items,
