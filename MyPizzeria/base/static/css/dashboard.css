@@ -201,7 +201,7 @@
 .container {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive two-column layout */
+  /*grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Responsive two-column layout */
   max-width: 1200px; /* Center content and limit max width */
   width: 200%;
   background-color: #fff;
