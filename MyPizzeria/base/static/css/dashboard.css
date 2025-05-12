@@ -15,8 +15,8 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 1000vh;
-  width: 10000px;
+  height:107vh;
+  width: 85px;
   background-color: #12171e;
   padding: 0.4rem 0.8rem;
   transition: all 0.5s ease;
@@ -156,6 +156,47 @@
   transition: all 0.1 ease;
   padding: 1rem;
 }*/
+
+
+
+/* 1) Siempre ocultar el texto de logout cuando la sidebar está colapsada */
+.sidebar:not(.active) .logout-text {
+  display: none !important;
+}
+
+/* 2) Centrar el icono dentro del botón y ocultar cualquier desbordamiento */
+.logout-form button {
+  display: flex;
+  align-items: center;
+  justify-content: center;  /* centro absoluto del icono */
+  overflow: hidden;          /* evita que el "Log" o "out" aparezcan aunque estén ahí */
+  white-space: nowrap;       /* sin salto de línea */
+  padding: 10px;                /* ya lo controla tu <li> */
+  background: none;          /* quita el fondo predeterminado de botón */
+  border: none;
+  cursor: pointer;
+  margin-top: 2.5rem;
+}
+
+/* 3) Quitar el outline/blue ring en focus y active */
+.logout-form button:focus,
+.logout-form button:active {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 4) Reaplicar el hover al botón para que pinte igual que tus <a> */
+.logout-form button:hover {
+  background-color: #0f6dd2;
+  color: #ffffff;
+  padding: 10px;
+  border-radius: 0.8rem;
+  height: 70px;
+  width: 3rem;
+}
+
+
+
 
 /* Custom styles for user grid layout */
 .user-grid {

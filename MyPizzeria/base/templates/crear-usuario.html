@@ -60,17 +60,14 @@
         <span class="tooltip">Manage Users</span>
       </li>
       {% endif %}
-      <li>
-        <a href="/mis-tareas/">
-          <i class="bx bxs-notepad"></i>
-          <span class="nav-item">Notifications</span>
-        </a>
-        <span class="tooltip">Notifications</span>
-      </li>
+       
       <li>
         <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
           {% csrf_token %}
-          <button type="submit" aria-label="Logout">Log out</button>
+          <button type="submit" aria-label="Logout">
+            <i class="bx bx-log-out logout-icon"></i>
+            <span class="nav-item logout-text">Log out</span>
+          </button>
         </form>
         <span class="tooltip">Log out</span>
       </li>
