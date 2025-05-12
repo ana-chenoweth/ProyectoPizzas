@@ -61,7 +61,7 @@ def edit_inventory_item(request, item_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Inventory item updated successfully!')
-            return redirect('home')
+            return redirect('base:home')
     else:
         form = InventoryItemForm(instance=inventory_item)
     return render(request, 'edit-inventory-item.html', {'form': form, 'inventory_item': inventory_item})
@@ -93,7 +93,7 @@ def delete_inventory_item(request, item_id):
     if request.method == 'POST':
         inventory_item.delete()
         messages.success(request, "Inventory item deleted successfully!")
-        return redirect('home')
+        return redirect('base:home')
     return render(request, 'delete-inventory-item.html', {'inventory_item': inventory_item})
 
 @login_required
