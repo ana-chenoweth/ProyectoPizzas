@@ -1,79 +1,82 @@
+
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create User - WorkMate!</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-     <!-- Bootstrap JS and dependencies -->
-     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  
-    <div class="sidebar">
-        <div class="top">
-          <div class="logo">
-            <i class="bx bxl-codepen"></i>
-            <span>WorkMate</span>
-          </div>
-          <i class="bx bx-menu" id="btn"></i>
-        </div>
-        <div class="user">
-          <img src="{% static "user-img.jpg" %}" alt="me" class="user-img">
-          <div>
-            {% if user.is_authenticated %}
-            <p class="bold">Hello, {{user.username}}</p>
-            {% endif %}
-          </div>
-        </div>
-        <ul>
-          <li>
-            <a href="/">
-              <i class="bx bxs-grid-alt"></i>
-              <span class="nav-item">Dashboard</span>
-            </a>
-            <span class="tooltip">Dashboard</span>
-          </li>
-          {% if perms.tasks.view_task %}
-          <li>
-            <a href="/gestion-tareas/">
-              <i class="bx bx-task"></i>
-              <span class="nav-item">Manage Tasks</span>
-            </a>
-            <span class="tooltip">Manage Tasks</span>
-          </li>
-          {% endif %}
-          {% if perms.user.edit_user %} 
-          <li>
-            <a href="/gestion-usuarios/">
-              <i class="bx bxs-user-account"></i>
-              <span class="nav-item">Manage Users</span>
-            </a>
-            <span class="tooltip">Manage Users</span>
-          </li>
-          {% endif %}
-          <li>
-            <a href="/mis-tareas/">
-              <i class="bx bxs-notepad"></i>
-              <span class="nav-item">My Tasks</span>
-            </a>
-            <span class="tooltip">My Tasks</span>
-          </li>
-          <li>
-            <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
-              {% csrf_token %}
-              <button type="submit" aria-label="Logout">Log out</button>
-            </form>
-            <span class="tooltip">Log out</span>
-          </li>
-        </ul>
-      </div>
 
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piedra Romana</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+   <!-- Bootstrap JS and dependencies -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+  <div class="sidebar">
+    <div class="top">
+      <div class="logo">
+        <i class="bx bxl-codepen"></i>
+        <span>Piedra Romana</span>
+      </div>
+      <i class="bx bx-menu" id="btn"></i>
+    </div>
+    <div class="user">
+      <img src="{% static "user-img.jpg" %}" alt="me" class="user-img">
+      <div>
+        {% if user.is_authenticated %}
+        <p class="bold">Hello, {{user.username}}</p>
+        {% endif %}
+        <p>Admin</p>
+      </div>
+    </div>
+    <ul>
+      <li>
+        <a href="/">
+          <i class="bx bxs-grid-alt"></i>
+          <span class="nav-item">Manage Inventory</span>
+        </a>
+        <span class="tooltip">Manage Inventory</span>
+      </li>
+      {% if perms.tasks.view_task %}
+      <li>
+        <a href="{% url 'base:add_inventory_item' %}">
+          <i class="bx bx-task"></i>
+          <span class="nav-item">Add Inventory</span>
+        </a>
+        <span class="tooltip">Add Inventory</span>
+      </li>
+      {% endif %}
+      {% if perms.user.edit_user %} 
+      <li>
+        <a href="/gestion-usuarios/">
+          <i class="bx bxs-user-account"></i>
+          <span class="nav-item">Manage Users</span>
+        </a>
+        <span class="tooltip">Manage Users</span>
+      </li>
+      {% endif %}
+      <li>
+        <a href="/mis-tareas/">
+          <i class="bx bxs-notepad"></i>
+          <span class="nav-item">Notifications</span>
+        </a>
+        <span class="tooltip">Notifications</span>
+      </li>
+      <li>
+        <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
+          {% csrf_token %}
+          <button type="submit" aria-label="Logout">Log out</button>
+        </form>
+        <span class="tooltip">Log out</span>
+      </li>
+    </ul>
+  </div>
     
       <div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh; max-width: 900px; width: 100%;">
         <div class="card w-100">

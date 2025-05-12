@@ -1,16 +1,23 @@
+
 {% load static %}
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WorkMate!</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">        
-    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <!-- Bootstrap CSS -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-  </head>
-  <body>
-    
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Piedra Romana</title>
+  <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+   <!-- Bootstrap JS and dependencies -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
   <div class="sidebar">
     <div class="top">
       <div class="logo">
@@ -32,17 +39,17 @@
       <li>
         <a href="/">
           <i class="bx bxs-grid-alt"></i>
-          <span class="nav-item">Dashboard</span>
+          <span class="nav-item">Manage Inventory</span>
         </a>
-        <span class="tooltip">Dashboard</span>
+        <span class="tooltip">Manage Inventory</span>
       </li>
       {% if perms.tasks.view_task %}
       <li>
         <a href="{% url 'base:add_inventory_item' %}">
           <i class="bx bx-task"></i>
-          <span class="nav-item">Manage Inventory</span>
+          <span class="nav-item">Add Inventory</span>
         </a>
-        <span class="tooltip">Manage Inventory</span>
+        <span class="tooltip">Add Inventory</span>
       </li>
       {% endif %}
       {% if perms.user.edit_user %} 
@@ -57,9 +64,9 @@
       <li>
         <a href="/mis-tareas/">
           <i class="bx bxs-notepad"></i>
-          <span class="nav-item">My Added Inventory</span>
+          <span class="nav-item">Notifications</span>
         </a>
-        <span class="tooltip">My Added Inventory</span>
+        <span class="tooltip">Notifications</span>
       </li>
       <li>
         <form method="POST" action="{% url 'base:logout' %}" class="logout-form">
@@ -73,9 +80,9 @@
 
     <div class="main-content">
       <div class="container mt-12">
-      <h1>Dashboard</h1>
+      <h1>Inventory Overview</h1>
       <div class="container mt-12">
-        <h1>Inventory Overview</h1>
+        
         <table class="table">
           <thead>
             <tr>
@@ -84,6 +91,7 @@
               <th>Quantity</th>
               <th>Expiry Date</th>
               <th>Description</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -100,6 +108,14 @@
               <td>{{ item.quantity }}</td>
               <td>{{ item.expiry_date }}</td>
               <td>{{ item.description }}</td>
+              <td>
+                <a href="{% url 'base:edit_inventory_item' item.id %}" class="btn btn-sm btn-primary">Edit</a>
+
+                <form method="POST" action="{% url 'base:delete_inventory_item' item.id %}" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">Delete</button>
+               </form>
+              </td>
             </tr>
             {% empty %}
             <tr>

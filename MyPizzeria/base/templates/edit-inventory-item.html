@@ -78,30 +78,31 @@
     </ul>
   </div>
 
-    <div class="main-content">
-      <div class="container">
-        <h1>Manage Users</h1>
-        <div class="user-grid">
-          {% for user in users %}
-          <div class="user-card">
-            <h3>{{ user.username }}</h3>
-            <p>Email: {{ user.email }}</p>
-            <p>Description: {{ user.description }}</p>
-          </div>
-          {% empty %}
-          <p>No users found.</p>
-          {% endfor %}
-        </div>
-      </div>
+ 
+  <div class="main-content">
+    <div class="container mt-4">
+      <h1>Edit Inventory Item</h1>
+      <form method="POST" action="{% url 'base:edit_inventory_item' item.id %}">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary btn-sm">Save Changes</button>
+        <a href="{% url 'base:home' %}" class="btn btn-secondary btn-sm">Cancel</a>
+      </form>
     </div>
-  </body>
+  </div>
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
   <script>
-    let btn = document.querySelector('#btn');
-    let sidebar = document.querySelector('.sidebar');
-
-    btn.onclick = function () {
-      sidebar.classList.toggle('active');
-    };
-  </script>
+      let btn = document.querySelector('#btn');
+      let sidebar = document.querySelector('.sidebar');
+  
+      btn.onclick = function () {
+        sidebar.classList.toggle('active');
+      };
+    </script>
+</body>
 </html>

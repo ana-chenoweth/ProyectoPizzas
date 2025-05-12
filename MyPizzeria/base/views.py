@@ -17,13 +17,13 @@ def home(request):
 
     })
 
-
+'''
 @login_required
 def inventory_list(request):
     inventory_items = InventoryItem.objects.all()
 
     return render(request, "inventory_list.html", {'inventory_items': inventory_items})
-
+'''
 
 @login_required
 def add_inventory_item(request):
@@ -50,10 +50,10 @@ def edit_inventory_item(request, item_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Inventory item updated successfully!')
-            return redirect('inventory_list')
+            return redirect('home')
     else:
         form = InventoryItemForm(instance=inventory_item)
-    return render(request, 'edit-inventory_item.html', {'form': form, 'inventory_item': inventory_item})
+    return render(request, 'edit-inventory-item.html', {'form': form, 'inventory_item': inventory_item})
 
 @login_required
 @permission_required('tasks.delete_inventoryitem', raise_exception=True)
@@ -62,8 +62,8 @@ def delete_inventory_item(request, item_id):
     if request.method == 'POST':
         inventory_item.delete()
         messages.success(request, "Inventory item deleted successfully!")
-        return redirect('inventory_list')
-    return render(request, 'delete_inventory_item.html', {'inventory_item': inventory_item})
+        return redirect('home')
+    return render(request, 'delete-inventory-item.html', {'inventory_item': inventory_item})
 
 @login_required
 @permission_required('workmates.view_workmateuser', raise_exception=True)
@@ -102,7 +102,7 @@ def editar_usuario(request, user_id):
 
     return render(request, 'editar-usuario.html', {'form': form, 'user': user})
 
-
+'''
 @login_required
 def mis_tareas(request):
     filter_category = request.GET.get('category', '')
@@ -138,3 +138,4 @@ def mis_tareas(request):
 @login_required
 def crear_nueva_tarea(request):
     return render(request, "crear-nueva-tarea.html", {})
+'''
