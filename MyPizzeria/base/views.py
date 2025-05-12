@@ -5,16 +5,27 @@ from workmates.models import workmateUser
 from tasks.models import InventoryItem
 from .form import WorkmateUserCreationForm, InventoryItemForm
 from django.db import models
+from django.db.models import Q
+import csv
+from django.http import HttpResponse
 
 @login_required
 def home(request):
+    search_query = request.GET.get('search', '')
     inventory_items = InventoryItem.objects.all()
     category_totals = InventoryItem.objects.values('item_type').annotate(total_quantity=models.Sum('quantity'))
+    low_stock_items = InventoryItem.objects.filter(quantity__lte=5)  # umbral bajo
+
+    if search_query:
+        inventory_items = inventory_items.filter(
+            Q(name__icontains=search_query) |
+            Q(item_type__icontains=search_query)
+        )
 
     return render(request, 'base.html', {
         'inventory_items': inventory_items,
         'category_totals': category_totals,
-
+        'low_stock_items': low_stock_items,  # variable de bajo stock
     })
 
 '''
@@ -54,6 +65,26 @@ def edit_inventory_item(request, item_id):
     else:
         form = InventoryItemForm(instance=inventory_item)
     return render(request, 'edit-inventory-item.html', {'form': form, 'inventory_item': inventory_item})
+
+@login_required
+def export_inventory_csv(request):
+    # Crear respuesta con tipo de contenido CSV
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="inventory.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(['Name', 'Category', 'Quantity', 'Expiry Date', 'Description'])
+
+    for item in InventoryItem.objects.all():
+        writer.writerow([
+            item.name,
+            item.get_item_type_display(),
+            item.quantity,
+            item.expiry_date,
+            item.description
+        ])
+
+    return response
 
 @login_required
 @permission_required('tasks.delete_inventoryitem', raise_exception=True)

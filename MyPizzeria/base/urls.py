@@ -19,4 +19,6 @@ urlpatterns = [
     path('inventory/add/', views.add_inventory_item, name='add_inventory_item'),
     path('inventory/edit/<int:item_id>/', views.edit_inventory_item, name='edit_inventory_item'),
     path('inventory/delete/<int:item_id>/', views.delete_inventory_item, name='delete_inventory_item'),
+    path('inventory/export_csv/', views.export_inventory_csv, name='export_inventory_csv'),
+
 ]
