@@ -183,6 +183,7 @@
 .logout-form button:active {
   outline: none;
   box-shadow: none;
+  width: 5rem;
 }
 
 /* 4) Reaplicar el hover al botón para que pinte igual que tus <a> */
@@ -192,7 +193,7 @@
   padding: 10px;
   border-radius: 0.8rem;
   height: 70px;
-  width: 3rem;
+  width: auto;
 }
 
 
