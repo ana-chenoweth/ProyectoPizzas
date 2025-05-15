@@ -8,13 +8,17 @@ from django.db import models
 from django.db.models import Q
 import csv
 from django.http import HttpResponse
+from datetime import date, timedelta
 
 @login_required
 def home(request):
     search_query = request.GET.get('search', '')
     inventory_items = InventoryItem.objects.all()
+    today = date.today()
+    upcoming_expiry_date = today + timedelta(days=5)
     category_totals = InventoryItem.objects.values('item_type').annotate(total_quantity=models.Sum('quantity'))
     low_stock_items = InventoryItem.objects.filter(quantity__lte=5)  # umbral bajo
+    expiring_soon_items = InventoryItem.objects.filter(expiry_date__lte=upcoming_expiry_date, expiry_date__gte=today)
 
     if search_query:
         inventory_items = inventory_items.filter(
@@ -25,7 +29,9 @@ def home(request):
     return render(request, 'base.html', {
         'inventory_items': inventory_items,
         'category_totals': category_totals,
+        'expiring_soon_items': expiring_soon_items,
         'low_stock_items': low_stock_items,  # variable de bajo stock
+        'today': today,
     })
 
 '''
