@@ -151,4 +151,6 @@ Este proyecto fue desarrollado por:
 
 ## 📄 Licencia
 
-Este proyecto se distribuye bajo la Licencia MIT.
+Este proyecto está licenciado bajo los términos de la licencia MIT.  
+Consulta el archivo [LICENSE](./LICENSE) para más detalles.
+
