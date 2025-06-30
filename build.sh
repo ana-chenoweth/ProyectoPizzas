@@ -5,13 +5,14 @@ pip install -r requirements.txt
 
 # Aplica migraciones (crear tablas)
 python manage.py makemigrations workmates --noinput
+python manage.py makemigrations tasks --noinput  
 python manage.py migrate --noinput
 
 
 # Copia archivos estáticos
 python manage.py collectstatic --noinput
 
-# Crea superusuario solo si la tabla existe
+# Crea superusuario 
 python - << 'EOF'
 import os, django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'login.settings')
@@ -27,7 +28,7 @@ if 'workmates_workmateuser' in connection.introspection.table_names():
     password = os.getenv('DJANGO_SUPERUSER_PASSWORD')
     if username and not User.objects.filter(username=username).exists():
         User.objects.create_superuser(username, email or '', password)
-        print("✅ Superusuario creado:", username)
+        print("Superusuario creado:", username)
 else:
-    print("❌ Tabla workmates_workmateuser no existe aún. No se creó superusuario.")
+    print("Tabla workmates_workmateuser no existe aún. No se creó superusuario.")
 EOF
