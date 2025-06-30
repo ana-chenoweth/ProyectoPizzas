@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Instala dependencias y realiza migraciones automáticamente
 
+# Instala dependencias
 pip install -r requirements.txt
+
+# Migraciones desde dentro de la carpeta MyPizzeria
+cd MyPizzeria
 python manage.py migrate
-python manage.py collectstatic --noinput
