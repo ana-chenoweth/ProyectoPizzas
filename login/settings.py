@@ -28,7 +28,6 @@ DEBUG = os.getenv("RENDER", False) != ""
 ALLOWED_HOSTS = ['proyectopizzas.onrender.com']
 
 import os
-import dj_database_url
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
