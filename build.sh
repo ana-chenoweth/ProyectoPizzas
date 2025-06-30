@@ -1,28 +1,32 @@
 #!/bin/bash
-# build.sh
 
+# Instala las dependencias
 pip install -r requirements.txt
 
-# Migraciones
+# Aplica migraciones (crear tablas)
 python manage.py makemigrations --noinput
 python manage.py migrate --noinput
 
-# Recopilar assets
+# Copia archivos estáticos
 python manage.py collectstatic --noinput
 
-# Opcional: crea un superusuario si no existe (usa variables de entorno)
+# Crea superusuario solo si la tabla existe
 python - << 'EOF'
 import os, django
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'login.settings')
 django.setup()
+from django.db import connection
 from django.contrib.auth import get_user_model
-User = get_user_model()
 
-USERNAME = os.getenv('DJANGO_SUPERUSER_USERNAME')
-EMAIL = os.getenv('DJANGO_SUPERUSER_EMAIL')
-PASSWORD = os.getenv('DJANGO_SUPERUSER_PASSWORD')
-
-if USERNAME and not User.objects.filter(username=USERNAME).exists():
-    User.objects.create_superuser(USERNAME, EMAIL or '', PASSWORD)
-    print("Superuser creado:", USERNAME)
+# Asegúrate de que la tabla exista
+if 'workmates_workmateuser' in connection.introspection.table_names():
+    User = get_user_model()
+    username = os.getenv('DJANGO_SUPERUSER_USERNAME')
+    email = os.getenv('DJANGO_SUPERUSER_EMAIL')
+    password = os.getenv('DJANGO_SUPERUSER_PASSWORD')
+    if username and not User.objects.filter(username=username).exists():
+        User.objects.create_superuser(username, email or '', password)
+        print("✅ Superusuario creado:", username)
+else:
+    print("❌ Tabla workmates_workmateuser no existe aún. No se creó superusuario.")
 EOF
