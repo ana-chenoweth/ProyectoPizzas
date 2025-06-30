@@ -4,8 +4,9 @@
 pip install -r requirements.txt
 
 # Aplica migraciones (crear tablas)
-python manage.py makemigrations --noinput
+python manage.py makemigrations workmates --noinput
 python manage.py migrate --noinput
+
 
 # Copia archivos estáticos
 python manage.py collectstatic --noinput
