@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!ynyw*ed(lb^5yp(w_%(kzyvpu_u(w@dys%&ip=ca)ci_8ya5p
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['proyectopizzas.onrender.com']
 
 import os
 
